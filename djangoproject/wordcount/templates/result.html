@@ -1,0 +1,12 @@
+<h1>단어 수는 총 {{total}}개입니다.</h1>
+
+<a href= "{% url 'home' %}" > 다시 하기 </a>
+<br>
+<h2> 입력한 텍스트: </h2>
+{{full}}
+
+<h2> 단어 카운드 : </h2>
+{% for word,cnt in dict%}
+{{word}} : {{cnt}}
+<br>
+{%endfor%}
