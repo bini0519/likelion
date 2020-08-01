@@ -1,24 +1,52 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Designer
 
 # Create your views here.
 
 def home(request):
-    return render(request, 'home.html')
+    designers = Designer.objects.all()
+    return render(request, 'home.html', {'designers' : designers})
 
-def about(request):
-    return render(request, 'about.html')
+def detail(request, designer_id):
+    designer = get_object_or_404(Designer, pk = designer_id)
+    return render(request, 'detail.html', {'designer' : designer})
 
-def result(request):
-    text = request.GET['fulltext']
-    words = text.split()
-    word_dict = {}
-    for a in words:
-        if a in word_dict:
-            #increase
-            word_dict[a] += 1
-        else:
-            #add
-            word_dict[a] = 1
+def introduce(request):
+    return render(request, 'introduce.html')
 
+def new(request):
+    return render(request, 'new.html')
+    return redirect('home')
 
-    return render(request, 'result.html', {'full' : text, 'total' : len(words), 'dict' : word_dict.items})
+def create(request):
+    if request.method == 'POST':
+        post = Designer()
+        if 'image' in request.FILES:
+            post.image = request.FILES['image']
+        post.name = request.POST['name']
+        post.address = request.POST['address']
+        post.description = request.POST['description']
+
+        post.save()
+
+        return redirect('detail', post.id)
+
+def update(request, designer_id):
+    get_object_or_404(Designer, pk = designer_id)
+    if request.method == 'POST':
+        if 'image' in request.FILES:
+            post.image = request.FILES['image']
+        post.name = request.POST['name']
+        post.address = request.POST['address']
+        post.description = request.POST['description']
+
+        post.save()
+        return redirect('detail', post.id)
+    else:
+        return render(request, 'update.html', {'designer': post})
+
+def delete(request, designer_id):
+    post = get_object_or_404(Designer, pk = designer_id)
+    post.delete()
+
+    return redirect('home')
