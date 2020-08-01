@@ -16,7 +16,7 @@ def introduce(request):
 
 def new(request):
     return render(request, 'new.html')
-    return redirect('home')
+    
 
 def create(request):
     if request.method == 'POST':
