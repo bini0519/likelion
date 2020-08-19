@@ -19,7 +19,7 @@
 <a href="{% url 'delete' my_jss.id %}"><button>삭제</button></a>
 {% endif %}
 
-{% is user.is_authenticated %}
+{% if user.is_authenticated %}
     <form method="POST" action="{% url 'create_comment' my_jss.id %}">
         {% csrf_token %}
         {{comment_form}}
